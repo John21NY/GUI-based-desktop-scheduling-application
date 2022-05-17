@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="600.0" prefWidth="600.0" style="-fx-background-color: #263F73;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainScreen">
+    <children>
+        <RadioButton fx:id="monthlyRadioButton" layoutX="642.0" layoutY="40.0" mnemonicParsing="false" onAction="#monthlyRadioButtonOnAction" text="Monthly" textFill="#f8f6f6">
+         <font>
+            <Font name="Verdana" size="14.0" />
+         </font>
+         <padding>
+            <Insets top="10.0" />
+         </padding></RadioButton>
+        <RadioButton fx:id="weeklyRadioButton" layoutX="513.0" layoutY="40.0" mnemonicParsing="false" onAction="#weeklyRadioButtonOnAction" text="Weekly" textFill="#fffefe">
+         <font>
+            <Font name="Verdana" size="14.0" />
+         </font>
+         <padding>
+            <Insets top="10.0" />
+         </padding></RadioButton>
+        <RadioButton fx:id="allRadioButton" layoutX="409.0" layoutY="40.0" mnemonicParsing="false" onAction="#allRadioButtonOnAction" selected="true" text="All" textFill="#fffdfd">
+            <font>
+                <Font name="Verdana" size="14.0" />
+            </font>
+         <padding>
+            <Insets top="10.0" />
+         </padding>
+        </RadioButton>
+        <TableView fx:id="appointmentTable" layoutX="7.0" layoutY="94.0" prefHeight="388.0" prefWidth="804.0">
+            <columns>
+                <TableColumn fx:id="appointmentIdColumn" prefWidth="91.0" text="Appointment ID" />
+                <TableColumn fx:id="titleColumn" prefWidth="79.0" text="Title" />
+                <TableColumn fx:id="descriptionColumn" prefWidth="74.0" text="Description" />
+                <TableColumn fx:id="locationColumn" prefWidth="69.0" text="Location" />
+                <TableColumn fx:id="contactColumn" prefWidth="67.0" text="Contact" />
+                <TableColumn fx:id="typeColumn" prefWidth="55.0" text="Type" />
+                <TableColumn fx:id="startDateTimeColumn" prefWidth="106.0" text="Start Date/Time" />
+                <TableColumn fx:id="endDateTimeColumn" prefWidth="94.0" text="End Date/Time" />
+            <TableColumn fx:id="customerIdColumn" prefWidth="38.5" text="Customer" />
+            <TableColumn fx:id="userIDColumn" prefWidth="61.0" text="User" />
+            </columns>
+        </TableView>
+        <Label fx:id="selectedTimeLabel" layoutX="25.0" layoutY="34.0" prefHeight="30.0" prefWidth="201.0" text="Appointments" textFill="#fffdfd">
+            <font>
+                <Font name="Verdana Bold" size="24.0" />
+            </font></Label>
+        <Button fx:id="newAppointmentButton" layoutX="551.0" layoutY="515.0" mnemonicParsing="false" onAction="#newButtonOnAction" prefHeight="25.0" prefWidth="85.0" text="New" />
+        <Button fx:id="editButton" layoutX="645.0" layoutY="515.0" mnemonicParsing="false" onAction="#editButtonOnAction" prefHeight="26.0" prefWidth="74.0" text="Edit" />
+        <Button fx:id="customersButton" layoutX="551.0" layoutY="554.0" mnemonicParsing="false" onAction="#customerButtonOnAction" prefHeight="25.0" prefWidth="85.0" style="-fx-background-color: #FFFFFF#FFFFFF;" text="Customers">
+         <font>
+            <Font size="14.0" />
+         </font></Button>
+        <Button fx:id="logOutButton" layoutX="730.0" layoutY="554.0" mnemonicParsing="false" onAction="#logoutButtonOnAction" prefHeight="26.0" prefWidth="74.0" text="Log out" />
+        <Button fx:id="deleteButton" layoutX="730.0" layoutY="515.0" mnemonicParsing="false" onAction="#deleteButtonOnAction" prefHeight="26.0" prefWidth="74.0" text="Delete" />
+        <Button fx:id="reportsButton" layoutX="645.0" layoutY="554.0" mnemonicParsing="false" onAction="#reportsPageOnAction" prefHeight="26.0" prefWidth="74.0" text="Reports" />
+    </children>
+
+</AnchorPane>
