@@ -46,7 +46,7 @@ An initial login screen is presented when the program starts. A valid username a
 
 Description of the additional report for part A3f
 --
-It was my choice to display the number of appointments per country. The query I created involves inner joins that combine three tables and output two columns (Country and count). Despite the complexity of the query, I was able to make it easy on the java side and pull the data into a tableview.
+My choice was to display the number of appointments per country. The query I created involves inner joins that combine three tables and output two columns (Country and count). Despite the complexity of the query, I was able to make it easy on the java side and pull the data into a tableview.
 
 MySQL Connector driver version number
 --
