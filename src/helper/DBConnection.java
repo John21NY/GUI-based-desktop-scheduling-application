@@ -5,6 +5,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/**Class DBConnection
+ * contains the details for the connection class*/
 public class DBConnection {
     private static final String protocol = "jdbc";
     private static final String vendorName = ":mysql:";
@@ -19,7 +21,7 @@ public class DBConnection {
 
 
 /**Connect to the DB
- * @return*/
+ * @return conn*/
     public static Connection startConnection() {
         try {
             Class.forName(MYSQLJBCDriver); // Locate Driver

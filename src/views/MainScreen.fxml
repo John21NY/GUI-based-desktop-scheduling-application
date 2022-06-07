@@ -6,6 +6,7 @@
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
@@ -17,15 +18,18 @@
          </font>
          <padding>
             <Insets top="10.0" />
-         </padding></RadioButton>
-        <RadioButton fx:id="weeklyRadioButton" layoutX="513.0" layoutY="40.0" mnemonicParsing="false" onAction="#weeklyRadioButtonOnAction" text="Weekly" textFill="#fffefe">
+         </padding>
+         <toggleGroup>
+            <ToggleGroup fx:id="tGroup" />
+         </toggleGroup></RadioButton>
+        <RadioButton fx:id="weeklyRadioButton" layoutX="513.0" layoutY="40.0" mnemonicParsing="false" onAction="#weeklyRadioButtonOnAction" text="Weekly" textFill="#fffefe" toggleGroup="$tGroup">
          <font>
             <Font name="Verdana" size="14.0" />
          </font>
          <padding>
             <Insets top="10.0" />
          </padding></RadioButton>
-        <RadioButton fx:id="allRadioButton" layoutX="409.0" layoutY="40.0" mnemonicParsing="false" onAction="#allRadioButtonOnAction" selected="true" text="All" textFill="#fffdfd">
+        <RadioButton fx:id="allRadioButton" layoutX="409.0" layoutY="40.0" mnemonicParsing="false" onAction="#allRadioButtonOnAction" selected="true" text="All" textFill="#fffdfd" toggleGroup="$tGroup">
             <font>
                 <Font name="Verdana" size="14.0" />
             </font>
@@ -43,8 +47,8 @@
                 <TableColumn fx:id="typeColumn" prefWidth="55.0" text="Type" />
                 <TableColumn fx:id="startDateTimeColumn" prefWidth="106.0" text="Start Date/Time" />
                 <TableColumn fx:id="endDateTimeColumn" prefWidth="94.0" text="End Date/Time" />
-            <TableColumn fx:id="customerIdColumn" prefWidth="38.5" text="Customer" />
-            <TableColumn fx:id="userIDColumn" prefWidth="61.0" text="User" />
+            <TableColumn fx:id="customerIdColumn" prefWidth="80.5" text="Customer" />
+            <TableColumn fx:id="userIDColumn" prefWidth="85.0" text="User" />
             </columns>
         </TableView>
         <Label fx:id="selectedTimeLabel" layoutX="25.0" layoutY="34.0" prefHeight="30.0" prefWidth="201.0" text="Appointments" textFill="#fffdfd">

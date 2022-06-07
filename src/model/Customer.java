@@ -1,5 +1,6 @@
 package model;
 
+/**Class Customer*/
 public class Customer {
     private int customerID;
     private String customerName;
@@ -9,6 +10,7 @@ public class Customer {
     private int divisionID;
     private String division;
     private String country;
+    private int countryID;
 
     /**
      * Generate constructor for Customer
@@ -21,8 +23,8 @@ public class Customer {
      * @param postalCode postal code
      * @param divisionID division id
      */
-    public Customer(int customerID, String customerName, String address, String postalCode, String phone,
-                    String division, int divisionID, String country) {
+    public Customer(int customerID, String customerName, String address, String postalCode, String phone, String division,
+                    int divisionID, String country, int countryID) {
         this.customerID = customerID;
         this.customerName = customerName;
         this.address = address;
@@ -31,6 +33,7 @@ public class Customer {
         this.division = division;
         this.divisionID = divisionID;
         this.country = country;
+        this.countryID = countryID;
     }
 
 //Getters and Setters
@@ -105,6 +108,21 @@ public class Customer {
     /**Setter for country*/
     public void setCountry(String country) {
         this.country = country;
+    }
+    /**Generate getter for customer country id
+     * @return  countryID*/
+    public int getCountryID() {
+        return countryID;
+    }
+    /**Setter for countryID*/
+    public void setCountryID(int countryID) {
+        this.countryID = countryID;
+    }
+
+    @Override
+    public String toString(){
+
+        return "" + customerID + " " + customerName;
     }
 
 

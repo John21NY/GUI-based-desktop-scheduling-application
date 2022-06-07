@@ -1,6 +1,5 @@
 package controller;
 
-
 import dbAccess.DBAppointment;
 import dbAccess.DBContact;
 import dbAccess.DBReports;
@@ -37,8 +36,6 @@ public class ReportsForm{
     @FXML
     public TableColumn descriptionColumn;
     @FXML
-    public TableColumn locationColumn;
-    @FXML
     public TableColumn contactColumn;
     @FXML
     public TableColumn typeColumn;
@@ -73,6 +70,8 @@ public class ReportsForm{
     @FXML
     public TableColumn countryCounter;
 
+    /**back button to navigate the user to the previous screen
+     * @throws IOException*/
     public void backToMainMenu(ActionEvent actionEvent) throws IOException {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Return to the Main Screen. Do you want to continue?");
         Optional<ButtonType> result = alert.showAndWait();
@@ -83,12 +82,14 @@ public class ReportsForm{
             stage.show();
         }
     }
+    /**Initialize method to initialize the columns in the table
+     * lambda expression to fill observable list with getContactName()
+     * @throws SQLException*/
     public void initialize() throws SQLException {
 
         appointmentIdColumn.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
-        locationColumn.setCellValueFactory(new PropertyValueFactory<>("location"));
         typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
         contactColumn.setCellValueFactory(new PropertyValueFactory<>("contactName"));
         startDateTimeColumn.setCellValueFactory(new PropertyValueFactory<>("startDateTime"));
@@ -109,7 +110,7 @@ public class ReportsForm{
         contactScheduleContactBox.setItems(allContactsNames);
 
     }
-
+/**It gives the appointments data for all the appointments per contact*/
     public void appointmentDataByContact(ActionEvent actionEvent) {
         try {
             int contactID = 0;
@@ -141,6 +142,11 @@ public class ReportsForm{
         }
     }
 
+    /**it gives the total number of appointments, per month and per type
+     * lambda expression to fill observable lists with getType()
+     * lambda expression to get a list of appointments in a specific start datetime for each month
+     * @param event
+     * */
     public void appointmentTotalsTab(Event event) {
         try {
             ObservableList<Appointment> getAllAppointments = DBAppointment.getAllAppointments();
@@ -155,9 +161,7 @@ public class ReportsForm{
 
 
             //IDE converted to Lambda
-            getAllAppointments.forEach(appointments -> {
-                        appointmentType.add(appointments.getType());
-                    });
+            getAllAppointments.forEach(appointments -> {appointmentType.add(appointments.getType());});
 
             //IDE converted to Lambda
             getAllAppointments.stream().map(appointment -> {
@@ -165,9 +169,7 @@ public class ReportsForm{
             }).forEach(appointmentMonths::add);
 
             //IDE converted to Lambda
-            appointmentMonths.stream().filter(month -> {
-                return !monthOfAppointments.contains(month);
-            }).forEach(monthOfAppointments::add);
+            appointmentMonths.stream().filter(month -> !monthOfAppointments.contains(month)).forEach(monthOfAppointments::add);
 
             for (Appointment appointments: getAllAppointments) {
                 String appointmentsAppointmentType = appointments.getType();
@@ -185,9 +187,8 @@ public class ReportsForm{
             appointmentTotalAppointmentByMonth.setItems(reportMonths);
 
             for (String type: uniqueAppointment) {
-                String typeToSet = type;
                 int typeTotal = Collections.frequency(appointmentType, type);
-                ReportsPerType appointmentTypes = new ReportsPerType(typeToSet, typeTotal);
+                ReportsPerType appointmentTypes = new ReportsPerType(type, typeTotal);
                 reportType.add(appointmentTypes);
             }
             appointmentTotalsAppointmentType.setItems(reportType);
@@ -196,10 +197,10 @@ public class ReportsForm{
             e.printStackTrace();
         }
     }
-
+/**it gives the number of customers by country
+ * @param event */
     public void customerByCountry(Event event) {
         try {
-
             ObservableList<Reports> aggregatedCountries = DBReports.getCountries();
             ObservableList<Reports> countriesToAdd = FXCollections.observableArrayList();
 

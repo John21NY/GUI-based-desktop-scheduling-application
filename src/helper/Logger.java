@@ -7,11 +7,10 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 
 
-
+/**Class Logger*/
 public class Logger {
      private static String logPath = "loginActivity.txt";
-    /**checkLogin
-     * it will write the buffered output to the login activity in the login activity text file
+    /**it will write the buffered output to the login activity in the login activity text file
      * @param userName username
      * @param isLogged boolean for successful login or not
      * @throws IOException*/

@@ -39,15 +39,14 @@
                                     <TableView fx:id="appointmentTable" layoutY="36.0" prefHeight="301.0" prefWidth="848.0">
                                         <columns>
                                             <TableColumn fx:id="appointmentIdColumn" prefWidth="92.96410369873047" text="Appointment ID" />
-                                            <TableColumn fx:id="titleColumn" prefWidth="57.5" text="Title" />
-                                            <TableColumn fx:id="descriptionColumn" prefWidth="111.5" text="Description" />
-                                            <TableColumn fx:id="locationColumn" prefWidth="76.5" text="Location" />
-                                            <TableColumn fx:id="contactColumn" prefWidth="108.0" text="Contact" />
-                                            <TableColumn fx:id="typeColumn" prefWidth="142.0" text="Type" />
-                                            <TableColumn fx:id="startDateTimeColumn" prefWidth="107.5" text="Start Date/Time" />
-                                            <TableColumn fx:id="endDateTimeColumn" prefWidth="167.5" text="End Date/Time" />
-                                            <TableColumn fx:id="customerIdColumn" prefWidth="75.0" text="CustomerID" />
-                                            <TableColumn fx:id="tableContactID" prefWidth="75.0" text="Contact ID" />
+                                            <TableColumn fx:id="titleColumn" prefWidth="70.5" text="Title" />
+                                            <TableColumn fx:id="descriptionColumn" prefWidth="78.5" text="Description" />
+                                            <TableColumn fx:id="contactColumn" prefWidth="94.0" text="Contact" />
+                                            <TableColumn fx:id="typeColumn" prefWidth="88.0" text="Type" />
+                                            <TableColumn fx:id="startDateTimeColumn" prefWidth="129.5" text="Start Date/Time" />
+                                            <TableColumn fx:id="endDateTimeColumn" prefWidth="135.5" text="End Date/Time" />
+                                            <TableColumn fx:id="customerIdColumn" prefWidth="85.0" text="CustomerID" />
+                                    <TableColumn fx:id="tableContactID" prefWidth="70.0" text="ContactID" />
                                         </columns>
                                     </TableView>
                                 </children>

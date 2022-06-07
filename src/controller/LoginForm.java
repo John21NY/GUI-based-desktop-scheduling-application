@@ -22,12 +22,16 @@ import java.sql.*;
 import java.time.ZoneId;
 import java.util.*;
 
-
-
-
-
-
+/**Class LoginForm*/
 public class LoginForm implements Initializable {
+    @FXML
+    public Label timezoneLabel;
+    @FXML
+    public Label appointmentSchedulingLabel;
+    @FXML
+    public Label secureLogin;
+    @FXML
+    public Label softwareTitleLabel;
     @FXML
     public Label userNameLabel;
     @FXML
@@ -42,44 +46,38 @@ public class LoginForm implements Initializable {
     public Button cancelButton;
     @FXML
     public Button exitButton;
-    @FXML
-    public Label timezoneLabel;
-    @FXML
-    public Label appointmentSchedulingLabel;
-
-    private static User loggedOnUser;
 
 
+    public static User loggedOnUser;
+
+
+    private ResourceBundle rb = ResourceBundle.getBundle("resources/Languages", Locale.getDefault());
+
+
+/**It changes the screen every time the user push a button*/
     public void changeScreen(ActionEvent event, String changePath) throws IOException {
         Parent parent = FXMLLoader.load(getClass().getResource(changePath));
         Scene scene = new Scene(parent);
-        Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(scene);
         stage.show();
     }
 
-
-
-
+/**It cancels the current event and clean the current user choices
+ * @param actionEvent */
     public void cancelButtonOnAction(ActionEvent actionEvent) {
         usernameTextField.clear();
         passwordPasswordField.clear();
     }
 
-
+/**it is used for the login button
+ * it takes the username and password as a test, and it checks the appropriate conditions
+ * @param actionEvent
+ * @throws SQLException
+ * @throws IOException*/
     public void loginButtonOnAction(ActionEvent actionEvent) throws SQLException, IOException {
         String userNameInput = usernameTextField.getText();
         String passwordInput = passwordPasswordField.getText();
-
-/**
-        if(!userNameInput.isBlank() && !passwordInput.isBlank()){
-            LoginAssembly.validateLogin("test", "test");
-        }
-        else{
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter Username and Password");
-            alert.show();
-
-        }*/
 
         loggedOnUser = DBUser.validateLogin(userNameInput, passwordInput);
 
@@ -96,49 +94,60 @@ public class LoginForm implements Initializable {
                     invalidInput.showAndWait();
                 }
             } else {
-                ButtonType clickOk = new ButtonType("Okay", ButtonBar.ButtonData.OK_DONE);
+                ButtonType clickOk = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
                 Alert invalidInput = new Alert(Alert.AlertType.CONFIRMATION, "No upcoming Appointments", clickOk);
                 invalidInput.showAndWait();
             }
+            Locale.setDefault(new Locale("en", "US"));
             changeScreen(actionEvent, "/views/MainScreen.fxml");
-        }
-        else{
+        } else {
             Logger.checkLogin(userNameInput, false);
-            Locale userLocale = Locale.getDefault();
-            ResourceBundle rb = ResourceBundle.getBundle("resources/Languages");
-            ButtonType clickOk = new ButtonType(rb.getString("okButton"), ButtonBar.ButtonData.OK_DONE);
+            ButtonType clickOk = new ButtonType(rb.getString("loginButton"), ButtonBar.ButtonData.OK_DONE);
             Alert alert = new Alert(Alert.AlertType.WARNING, rb.getString("logonFailedButton"),
                     clickOk);
             alert.showAndWait();
         }
     }
 
+    /**this is a button for the user to exit the program
+     * @param actionEvent
+     * @return loggedOnUser*/
     public void exitButtonOnAction(ActionEvent actionEvent) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Exit");
         alert.setContentText("Are you sure you want to Exit?");
         Optional<ButtonType> confirm = alert.showAndWait();
-        if(confirm.isPresent() && confirm.get() == ButtonType.OK){
+        if (confirm.isPresent() && confirm.get() == ButtonType.OK) {
             System.exit(0);
 
         }
     }
-    public static User getLoggedOnUser(){
+/**method to return the logged on user
+ * @return loggedOnUser*/
+    public static User getLoggedOnUser() {
+
         return loggedOnUser;
     }
 
+    /**Initialize the values for the current controller
+     * @throws Exception*/
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        Locale userLocale = Locale.getDefault();
-        timezoneLabel.setText(ZoneId.systemDefault().toString());
-        resourceBundle = ResourceBundle.getBundle("resources/Languages");
-        appointmentSchedulingLabel.setText(resourceBundle.getString("titleLabel"));
-        userNameLabel.setText(resourceBundle.getString("userNameLabel"));
-        passwordLabel.setText(resourceBundle.getString("passwordLabel"));
-        loginButton.setText(resourceBundle.getString("loginButton"));
-        cancelButton.setText(resourceBundle.getString("cancelButton"));
-        exitButton.setText(resourceBundle.getString("exitButton"));
+        try {
+            appointmentSchedulingLabel.setText(rb.getString("titleLabel"));
+            timezoneLabel.setText(ZoneId.systemDefault().toString());
+            secureLogin.setText(rb.getString("secureLogin"));
+            softwareTitleLabel.setText(rb.getString("SoftwareTitleLabel"));
+            userNameLabel.setText(rb.getString("userNameLabel"));
+            passwordLabel.setText(rb.getString("passwordLabel"));
+            loginButton.setText(rb.getString("loginButton"));
+            cancelButton.setText(rb.getString("cancelButton"));
+            exitButton.setText(rb.getString("exitButton"));
 
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }
 

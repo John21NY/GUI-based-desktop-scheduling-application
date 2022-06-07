@@ -12,11 +12,9 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.*;
 
+/**Class DBAppointment*/
 public class DBAppointment {
-    /**
-     * getAllAppointments
-     * we are looking for all appointments in the database
-     *
+    /**we are looking for all appointments in the database
      * @throws SQLException
      * @returns allAppointments, a list of all appointments
      */
@@ -35,14 +33,10 @@ public class DBAppointment {
             String type = rs.getString("Type");
             LocalDateTime startDateTime = rs.getTimestamp("Start").toLocalDateTime();
             LocalDateTime endDateTime = rs.getTimestamp("End").toLocalDateTime();
-            //LocalDateTime createdDate = rs.getTimestamp("Create_Date").toLocalDateTime();
-            //String createdBy = rs.getString("Created_by");
-            //LocalDateTime lastUpdateDateTime = rs.getTimestamp("Last_Update").toLocalDateTime();
-            //String lastUpdateBy = rs.getString("Last_Updated_By");
             int customerID = rs.getInt("Customer_ID");
             int userID = rs.getInt("User_ID");
             int contactID = rs.getInt("Contact_ID");
-            //String contactName = rs.getString("Contact_Name");
+
 
             Appointment appointment = new Appointment(appointmentID, title, description, location, type, startDateTime,
                     endDateTime, LocalDateTime.now(), "", LocalDateTime.now(), "",
@@ -54,10 +48,7 @@ public class DBAppointment {
         return allAppointments;
     }
 
-    /**
-     * getDateAppointments
-     * we are looking for all filtered appointments in the database
-     *
+    /**we are looking for all filtered appointments in the database
      * @param startDate start date for the range of LocalDateTime
      * @param endDate   end date for the range of LocalDateTime
      * @return DateFilteredAppointments a list for appointments based on the user input start date and end date
@@ -81,14 +72,9 @@ public class DBAppointment {
             String type = rs.getString("Type");
             LocalDateTime startDateTime = rs.getTimestamp("Start").toLocalDateTime();
             LocalDateTime endDateTime = rs.getTimestamp("End").toLocalDateTime();
-            // LocalDateTime createDate = rs.getTimestamp("Create_Date").toLocalDateTime();
-            //String createdBy = rs.getString("Created_by");
-            // LocalDateTime lastUpdateDateTime = rs.getTimestamp("Last_Update").toLocalDateTime();
-            //String lastUpdateBy = rs.getString("Last_Updated_By");
             int customerID = rs.getInt("Customer_ID");
             int userID = rs.getInt("User_ID");
             int contactID = rs.getInt("Contact_ID");
-            //String contactName = rs.getString("Contact_Name");
 
             Appointment appointment = new Appointment(appointmentID, title, description, location, type, startDateTime,
                     endDateTime, LocalDateTime.now(), "", LocalDateTime.now(), "",
@@ -100,10 +86,7 @@ public class DBAppointment {
         return DateFilteredAppointments;
     }
 
-    /**
-     * getAppointmentsInTheNext15Minutes
-     * find appointments in the database for logged users starting within 15 minutes
-     *
+    /**find appointments in the database for logged users starting within 15 minutes
      * @return appointmentsIn15Minutes, a list of appointments for logged users within 15 minutes
      * @throws SQLException
      */
@@ -123,14 +106,9 @@ public class DBAppointment {
             String type = rs.getString("Type");
             LocalDateTime startDateTime = rs.getTimestamp("Start").toLocalDateTime();
             LocalDateTime endDateTime = rs.getTimestamp("End").toLocalDateTime();
-           // LocalDateTime createDate = rs.getTimestamp("Create_Date").toLocalDateTime();
-            //String createdBy = rs.getString("Created_by");
-           // LocalDateTime lastUpdateDateTime = rs.getTimestamp("Last_Update").toLocalDateTime();
-            //String lastUpdateBy = rs.getString("Last_Updated_By");
             int customerID = rs.getInt("Customer_ID");
             int userID = rs.getInt("User_ID");
             int contactID = rs.getInt("Contact_ID");
-            //String contactName = rs.getString("Contact_Name");
 
             Appointment appointment = new Appointment(appointmentID, title, description, location, type, startDateTime,
                     endDateTime, LocalDateTime.now(), "", LocalDateTime.now(), "",
@@ -141,8 +119,7 @@ public class DBAppointment {
         return appointmentsIn15Minutes;
 
     }
-    /**addAppointment
-     * it takes input and creates a new appointment in the database
+    /**it takes input and creates a new appointment in the database
      * @param addContactID  contact ID
      * @param addCreatedBy  created by
      * @param addCustomerID  customer ID
@@ -156,7 +133,7 @@ public class DBAppointment {
      * @param addUserID user ID
      * @return  boolean if the addition was successful
      * @throws SQLException*/
-    public static boolean addAppointment(String addTitle, String addDescription, String addLocation, String addType,
+    public static int addAppointment(String addTitle, String addDescription, String addLocation, String addType,
                                          LocalDateTime addStart, LocalDateTime addEnd, String addCreatedBy,
                                          String addLastUpdateBy, int addCustomerID, int addUserID,
                                          int addContactID) throws SQLException {
@@ -168,24 +145,18 @@ public class DBAppointment {
         ps.setString(2, addDescription);
         ps.setString(3, addLocation);
         ps.setString(4, addType);
-        ps.setTimestamp(5, Timestamp.valueOf(addStart));
-        ps.setTimestamp(6, Timestamp.valueOf(addEnd));
+        ps.setTimestamp(5, Timestamp.valueOf(addStart)); // todo I am not sure about this change
+        ps.setTimestamp(6, Timestamp.valueOf(addEnd));   // todo I am not sure about this change
         ps.setString(7, addCreatedBy);
         ps.setString(8, addLastUpdateBy);
         ps.setInt(9, addCustomerID);
         ps.setInt(10, addUserID);
         ps.setInt(11, addContactID);
-        try {
-            ps.executeQuery();
-            ps.close();
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
+        int rowsAffected = ps.executeUpdate();
+        return rowsAffected;
+
     }
-    /**updateAppointment
-     * it takes the chosen appointment and updates it in the database
+    /**it takes the chosen appointment and updates it in the database
      * @param addUserID  user id
      * @param addType type
      * @param addTitle title
@@ -199,7 +170,7 @@ public class DBAppointment {
      * @param addAppointmentID appointment id
      * @return a boolean returning true if the update was successful or false if it was not
      * @throws SQLException*/
-    public static boolean updateAppointment(int addAppointmentID, String addTitle, String addDescription,
+    public static int updateAppointment(int addAppointmentID, String addTitle, String addDescription,
                                             String addLocation, String addType, LocalDateTime updateStart,
                                             LocalDateTime updateEnd, String addLastUpdateBy, int addCustomerID,
                                             int addUserID, int addContactID) throws SQLException {
@@ -213,104 +184,36 @@ public class DBAppointment {
         ps.setString(3, addLocation);
         ps.setString(4, addType);
         ps.setTimestamp(5, Timestamp.valueOf(updateStart));
-        ps.setTimestamp(6, Timestamp.valueOf(String.valueOf(updateEnd)));
-        //ps.setString(7, ZonedDateTime.now(ZoneOffset.UTC).format(dtf));
+        ps.setTimestamp(6, Timestamp.valueOf(updateEnd));
         ps.setString(7, addLastUpdateBy);
         ps.setInt(8, addCustomerID);
         ps.setInt(9, addUserID);
         ps.setInt(10, addContactID);
         ps.setInt(11, addAppointmentID);
-        try{
-            ps.executeQuery();
-            ps.close();
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            ps.close();
-            return false;
-        }
+        int rowsAffected = ps.executeUpdate();
+        return rowsAffected;
     }
-    /**deleteAppointment
-     * the user inserts the appointment id to delete it
+    /**the user inserts the appointment id to delete it
      * @return a boolean that returns true if the deletion was successful or false if not
      * @throws SQLException*/
-    public static boolean deleteAppointment(int addAppointmentID) throws SQLException {
+    public static int deleteAppointment(int addAppointmentID) throws SQLException {
         String sql = "DELETE FROM appointments WHERE Appointment_ID = ?";
         PreparedStatement ps = DBConnection.conn.prepareStatement(sql);
         ps.setInt(1, addAppointmentID);
-        try{
-            ps.execute();
-            ps.close();
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
+        int rowsAffected = ps.executeUpdate();
+        return rowsAffected;
     }
-    /**getCustomerFilteredAppointments
-     * queries the database to get all appointments for a customer on a specific date
-     * @param appointmentDate appointment date
-     * @param addCustomerID customer id
-     * @return a list of appointments for a customer on a specific date
-     * @throws SQLException
-    public static ObservableList<Appointment> getCustomerFilteredAppointments(LocalDate appointmentDate,
-                                                                              int addCustomerID) throws SQLException {
-        ObservableList<Appointment> customerFilteredAppointments = FXCollections.observableArrayList();
-        String sql = "SELECT * \n" +
-                "FROM appointments a \n" +
-                "LEFT OUTER JOIN contacts c \n" +
-                "on (a.Contact_ID = c.Contact_ID)\n" +
-                "WHERE datediff(a.Start, '?') = 0 AND Customer_ID = '?';";
-        PreparedStatement ps = DBConnection.conn.prepareStatement(sql);
-        ps.setString(1, appointmentDate.toString());
-        ps.setInt(2, addCustomerID);
 
-        ResultSet rs = ps.executeQuery();
-        while(rs.next()){
-            int appointmentID = rs.getInt("Appointment_ID");
-            String title = rs.getString("Title");
-            String description = rs.getString("Description");
-            String location = rs.getString("Location");
-            String type = rs.getString("Type");
-            LocalDateTime startDateTime = rs.getTimestamp("Start").toLocalDateTime();
-            LocalDateTime endDateTime = rs.getTimestamp("End").toLocalDateTime();
-            LocalDateTime createdDate = rs.getTimestamp("Create_Date").toLocalDateTime();
-            String createdBy = rs.getString("Created_by");
-            LocalDateTime lastUpdateDateTime = rs.getTimestamp("Last_Update").toLocalDateTime();
-            String lastUpdatedBy = rs.getString("Last_Updated_By");
-            int customerID = rs.getInt("Customer_ID");
-            int userID = rs.getInt("User_ID");
-            int contactID = rs.getInt("Contact_ID");
-            String contactName = rs.getString("Contact_Name");
-
-            Appointment appointment = new Appointment(appointmentID, title, description, location, type, startDateTime,
-                    endDateTime, LocalDateTime.now(), "", LocalDateTime.now(), "",
-                    customerID, userID, contactID);
-            customerFilteredAppointments.add(appointment);
-        }
-        ps.close();
-        return customerFilteredAppointments;
-    }*/
-    //public static boolean businessHours(String startTime, String endTime, String appointmentDate){
-        //LocalDateTime localStart =
-    //}
-    /**deleteCustomerAppointments
-     * delete all appointments for a specific customer
+    /**delete all appointments for a specific customer
      * @param customerID customer id
      * @return boolean for a successful deletion or not
      * @throws SQLException*/
-    public static boolean deleteCustomerAppointments(int customerID) throws SQLException {
+    public static int deleteCustomerAppointments(int customerID) throws SQLException {
         String sql = "DELETE FROM appointments WHERE Customer_ID = ?";
         PreparedStatement ps = DBConnection.conn.prepareStatement(sql);
         ps.setInt(1, customerID);
-        try{
-            ps.executeQuery();
-            ps.close();
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
+        int rowsAffected = ps.executeUpdate();
+        return rowsAffected;
     }
 
 }

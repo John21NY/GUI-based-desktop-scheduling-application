@@ -1,5 +1,6 @@
 package model;
 
+/**Class ReportsPerMonth*/
 public class ReportsPerMonth {
     public String appointmentPerMonth;
     public int appointmentsInTotal;

@@ -1,8 +1,10 @@
 package controller;
 
+
 import dbAccess.DBCountry;
 import dbAccess.DBCustomer;
 import dbAccess.DBDivision;
+import helper.ListManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -23,91 +25,136 @@ import java.sql.SQLException;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+/**Class for edit a customer*/
 public class CustomerEditForm implements Initializable {
     @FXML
     public Button saveButton;
     @FXML
-    public Button clearButton;
-    @FXML
     public Button backButton;
     @FXML
-    public static TextField customerIDTextField;
+    public TextField customerIDTextField;
     @FXML
-    public static TextField customerNameTextField;
+    public TextField customerNameTextField;
     @FXML
-    public static TextField addressTextField;
+    public TextField addressTextField;
     @FXML
-    public static TextField postalCodeTextField;
+    public TextField postalCodeTextField;
     @FXML
-    public static TextField phoneTextField;
+    public TextField phoneTextField;
     @FXML
-    public static ComboBox countryComboBox;
+    public ComboBox<Country> countryComboBox;
     @FXML
-    public static ComboBox divisionComboBox;
+    public ComboBox<Division> divisionComboBox;
 
-    private static Customer customerToModify;
+    private Customer customerToModify;
+    private ObservableList<Division> filteredDivisions = FXCollections.observableArrayList();
+
     /**Represents a method to receive a customer that it will be modified*/
-    public static void receiveCustomer(Customer selectedCustomer) throws SQLException {
+    public void receiveCustomer(Customer selectedCustomer) throws SQLException {
         customerToModify = selectedCustomer;
         customerIDTextField.setText(String.valueOf(customerToModify.getCustomerID()));
         customerNameTextField.setText(customerToModify.getCustomerName());
         addressTextField.setText(String.valueOf(customerToModify.getAddress()));
         postalCodeTextField.setText(String.valueOf(customerToModify.getPostalCode()));
         phoneTextField.setText(String.valueOf(customerToModify.getPhone()));
-        countryComboBox.getSelectionModel().getSelectedIndex();
-        divisionComboBox.getSelectionModel().getSelectedIndex();
-
+        Country country = DBCountry.getCountry(customerToModify.getCountryID());
+        countryComboBox.setValue(country);
+        Division division = DBDivision.getDivision(customerToModify.getDivisionID());
+        divisionComboBox.setValue(division);
     }
 
+/**Method to handle the saving button for the edit customer controller
+ * it checks if every field is empty and returns an alert for the user
+ * otherwise, it will update customer's details
+ * @param actionEvent
+ * @throws IOException
+ * @throws SQLException*/
+    public void saveButtonOnAction(ActionEvent actionEvent) throws IOException {
+        try {
+            if (countryComboBox.getValue() == null || divisionComboBox.getValue() == null || customerNameTextField.getText().isBlank() || addressTextField.getText().isBlank()
+                    || postalCodeTextField.getText().isBlank() || phoneTextField.getText().isBlank()) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setContentText("You need to fill up all the fields.");
+                alert.show();
+            } else {
+                int rowsAffectedByAddition = DBCustomer.updateCustomer(customerNameTextField.getText(), addressTextField.getText(), postalCodeTextField.getText(),
+                        phoneTextField.getText(),  divisionComboBox.getValue().getDivisionID(), customerToModify.getCustomerID());
 
-    public void saveButtonOnAction(ActionEvent actionEvent) {
-    }
-/**clearButtonOnAction
- * it clears all the fields
- * @param actionEvent click Button*/
-    public void clearButtonOnAction(ActionEvent actionEvent) throws IOException {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "You are trying to clear the scene. Do you want to continue?");
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-            Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
-            Object scene = FXMLLoader.load(getClass().getResource("/views/CustomerEditForm.fxml"));
-            stage.setScene(new Scene((Parent) scene));
-            stage.show();
+                if (rowsAffectedByAddition > 0) {
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("Confirm");
+                    alert.setContentText("Update Successful.");
+                    alert.showAndWait();
+                    Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
+                    Object scene = FXMLLoader.load(getClass().getResource("/views/CustomerViewForm.fxml"));
+                    stage.setScene(new Scene((Parent) scene));
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setContentText("Update Failed.");
+                    alert.show();
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
-    /**backButtonOnAction
-     * it handles the cancel and go back to the main screen event
+
+    /**it handles the cancel and go back to the main screen event
      * @param actionEvent action event
-     * @throws IOException*/
+     * @throws IOException
+     */
     public void backButtonOnAction(ActionEvent actionEvent) throws IOException {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Return to the Main Screen. Do you want to continue?");
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
             Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
-            Object scene = FXMLLoader.load(getClass().getResource("/views/MainScreen.fxml"));
+            Object scene = FXMLLoader.load(getClass().getResource("/views/CustomerViewForm.fxml"));
             stage.setScene(new Scene((Parent) scene));
             stage.show();
-
         }
     }
 
+    /**Initialize the stage and it filters the countries and divisions
+     * @param url this is the user location
+     * @param resourceBundle resourceBundle
+     * @throws Exception*/
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
-            ObservableList<DBCountry> allCountries = DBCountry.getAllCountries();
-            ObservableList<DBDivision> allDivisions = DBDivision.getAllDivisions();
-
-            countryComboBox.setItems(allCountries);
-            divisionComboBox.setItems(allDivisions);
+            countryComboBox.setItems(ListManager.allCountries);
+            countryComboBox.getSelectionModel().select(0);
+            for(Division d : ListManager.allDivisions){
+                if(d.getCountryID() == countryComboBox.getValue().getCountryID()){
+                    filteredDivisions.add(d);
+                }
+            }
+            divisionComboBox.setItems(filteredDivisions);
+            divisionComboBox.getSelectionModel().selectFirst();
             customerIDTextField.getText();
             customerNameTextField.getText();
             addressTextField.getText();
             postalCodeTextField.getText();
             phoneTextField.getText();
 
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
+
+    }
+    @FXML
+    public void onActionSelectCountry(ActionEvent actionEvent) {
+        int countryID = countryComboBox.getValue().getCountryID();
+        filteredDivisions.clear();
+        for(Division d : ListManager.allDivisions){
+            if(d.getCountryID() == countryID){
+                filteredDivisions.add(d);
+            }
+        }
+        divisionComboBox.setItems(filteredDivisions);
+        divisionComboBox.getSelectionModel().selectFirst();
+
 
     }
 }

@@ -1,11 +1,7 @@
 package controller;
 
 import dbAccess.DBAppointment;
-import dbAccess.DBCountry;
 import dbAccess.DBCustomer;
-import dbAccess.DBDivision;
-import helper.DBConnection;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,18 +12,15 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import model.Appointment;
-import model.Country;
 import model.Customer;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-
+/**Class for customer view*/
 public class CustomerViewForm implements Initializable {
     @FXML
     public TableView customerTable;
@@ -55,8 +48,7 @@ public class CustomerViewForm implements Initializable {
     public Button addButton;
 
 
-    /**pressBackButton
-     * it handles the cancel and go to the main screen action
+    /**it handles the cancel and go to the main screen action
      * @param actionEvent action event
      * @throws IOException*/
     public void pressBackButton(ActionEvent actionEvent) throws IOException {
@@ -69,8 +61,7 @@ public class CustomerViewForm implements Initializable {
             stage.show();
         }
     }
-/**deleteButtonOnAction
- * It checks if a customer has been selected and creates an alert for the user. Otherwise, it takes the selected customer
+/**It checks if a customer has been selected and creates an alert for the user. Otherwise, it takes the selected customer
  * and deletes the customer and all the related appointments. In addition, it populates the table for the customer
  * @param actionEvent click Button
  * @throws SQLException*/
@@ -82,54 +73,44 @@ public class CustomerViewForm implements Initializable {
             alert.setContentText("Select a customer.");
             alert.showAndWait();
         }else{
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Do you want to delete customer with Customer ID = "
-                    + selectedCustomer.getCustomerID() + " and Customer Name " + selectedCustomer.getCustomerName() + "? Customer's related data will be deleted.");
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "All appointments for this customer will also delete. Do you want to delete customer with Customer ID = "
+                    + selectedCustomer.getCustomerID() + " and Customer Name " + selectedCustomer.getCustomerName() + "?");
             Optional<ButtonType> result = alert.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.OK) {
                 int deleteCustomerID = ((Customer) customerTable.getSelectionModel().getSelectedItem()).getCustomerID();
-                DBAppointment.deleteAppointment(deleteCustomerID);
-                String sqlDelete = "DELETE FROM customers WHERE Customer_ID = ?";
-                DBConnection.getConnection().prepareStatement(sqlDelete);
-                PreparedStatement ps = DBConnection.conn.prepareStatement(sqlDelete);
-                int customerFromTable = ((Customer) customerTable.getSelectionModel().getSelectedItem()).getCustomerID();
-
-                for(Appointment appointment : DBAppointment.getAllAppointments()){
-                    int customerFromAppointments = appointment.getCustomerID();
-                    if(customerFromTable == customerFromAppointments){
-                        String deleteCustomerAppointments = "DELETE FROM appointments WHERE Appointment_ID = ?";
-                        DBConnection.getConnection().prepareStatement(deleteCustomerAppointments);
-                    }
-                }
-                ps.setInt(1, customerFromTable);
-                ps.executeUpdate();
+                DBAppointment.deleteCustomerAppointments(deleteCustomerID);
+                DBCustomer.deleteCustomer(deleteCustomerID);
                 ObservableList<Customer> newCustomerList = DBCustomer.getAllCustomers();
                 customerTable.setItems(newCustomerList);
             }
-
         }
     }
-/**editButtonOnAction
- * it checks if a customer has been selected and create and alert for the user. Otherwise, it changes screen to the customerEditForm
+/**it checks if a customer has been selected and create and alert for the user.
+ * Otherwise, it changes screen to the customerEditForm
  * @param actionEvent click Button
  * @throws IOException*/
     public void editButtonOnAction(ActionEvent actionEvent) throws IOException, SQLException {
         Customer selectedCustomer = (Customer) customerTable.getSelectionModel().getSelectedItem();
+        FXMLLoader loader = new FXMLLoader();
         if(selectedCustomer == null){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setContentText("Select a customer.");
             alert.showAndWait();
         }else
-            CustomerEditForm.receiveCustomer(selectedCustomer);
-            Stage stage = (Stage) customerTable.getScene().getWindow();
-            Parent root = FXMLLoader.load(getClass().getResource("/views/CustomerEditForm.fxml"));
-            stage.setScene(new Scene(root));
-            stage.show();
+            loader.setLocation(getClass().getResource("/views/CustomerEditForm.fxml"));
+        loader.load();
+        CustomerEditForm controller  = loader.getController();
+        controller.receiveCustomer(selectedCustomer);
+
+        Stage stage = (Stage) customerTable.getScene().getWindow();
+        Parent root = loader.getRoot();
+        stage.setScene(new Scene(root));
+        stage.show();
 
 
     }
-    /**addButtonOnAction
-     * switches the screen to addCustomerForm
+    /**it switches the screen to addCustomerForm
      * @param actionEvent click Button
      * @throws IOException*/
     public void addButtonOnAction(ActionEvent actionEvent) throws IOException {
@@ -140,7 +121,8 @@ public class CustomerViewForm implements Initializable {
     }
 /**Initialize the stage
  * @param url this is the user location
- * @param resourceBundle resourceBundle*/
+ * @param resourceBundle resourceBundle
+ * @throws SQLException*/
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {

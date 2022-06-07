@@ -1,17 +1,14 @@
 package helper;
 
-import javafx.collections.ObservableList;
-import model.Appointment;
-
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+
 /**timeConverter class*/
 public class TimeConverter {
-  /**convertToUTC
-   * convert time to UTC
+  /**convert time to UTC
    * @param dateTime
    * @return utcOUT*/
     public static String convertToUTC(String dateTime){

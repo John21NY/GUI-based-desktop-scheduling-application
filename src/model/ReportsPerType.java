@@ -1,5 +1,6 @@
 package model;
 
+/**Class ReportsPerType*/
 public class ReportsPerType {
     public String appointmentType;
     public int appointmentsInTotal;

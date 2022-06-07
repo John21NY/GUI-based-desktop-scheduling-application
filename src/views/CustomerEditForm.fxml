@@ -13,12 +13,7 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #263F73;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CustomerEditForm">
     <children>
-        <Button fx:id="saveButton" layoutX="327.0" layoutY="354.0" mnemonicParsing="false" onAction="#saveButtonOnAction" prefHeight="25.0" prefWidth="80.0" style="-fx-background-color: #FFFFFF#FFFFFF;" text="Save" textFill="#0d0000">
-            <font>
-                <Font name="Verdana" size="14.0" />
-            </font>
-        </Button>
-        <Button fx:id="clearButton" layoutX="417.0" layoutY="354.0" mnemonicParsing="false" onAction="#clearButtonOnAction" prefHeight="25.0" prefWidth="80.0" style="-fx-background-color: #FFFFFF#FFFFFF;" text="Clear" textFill="#0d0000">
+        <Button fx:id="saveButton" layoutX="410.0" layoutY="354.0" mnemonicParsing="false" onAction="#saveButtonOnAction" prefHeight="25.0" prefWidth="80.0" style="-fx-background-color: #FFFFFF#FFFFFF;" text="Save" textFill="#0d0000">
             <font>
                 <Font name="Verdana" size="14.0" />
             </font>
@@ -78,7 +73,7 @@
                         <Font name="Verdana" size="14.0" />
                     </font>
                 </Label>
-                <TextField fx:id="customerIDTextField" GridPane.columnIndex="1">
+                <TextField fx:id="customerIDTextField" editable="false" GridPane.columnIndex="1">
                     <GridPane.margin>
                         <Insets bottom="2.0" left="1.0" right="1.0" top="2.0" />
                     </GridPane.margin>
@@ -108,7 +103,7 @@
                         <Font name="Verdana" size="14.0" />
                     </font>
                 </Label>
-                <ComboBox fx:id="countryComboBox" prefWidth="170.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                <ComboBox fx:id="countryComboBox" onAction="#onActionSelectCountry" prefWidth="170.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                     <GridPane.margin>
                         <Insets bottom="2.0" left="1.0" right="1.0" top="2.0" />
                     </GridPane.margin>

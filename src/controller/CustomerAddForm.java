@@ -1,8 +1,7 @@
 package controller;
 
-import dbAccess.DBCountry;
 import dbAccess.DBCustomer;
-import dbAccess.DBDivision;
+import helper.ListManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -13,6 +12,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import model.Country;
+import model.Division;
 
 import java.io.IOException;
 import java.net.URL;
@@ -20,6 +21,7 @@ import java.sql.SQLException;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+/**Class using to add a customer*/
 public class CustomerAddForm implements Initializable {
     @FXML
     public Button saveButton;
@@ -38,46 +40,49 @@ public class CustomerAddForm implements Initializable {
     @FXML
     public TextField phoneTextField;
     @FXML
-    public ComboBox countryComboBox;
+    public ComboBox<Country> countryComboBox;
     @FXML
-    public ComboBox divisionComboBox;
+    public ComboBox<Division> divisionComboBox;
 
-//TODO I need to make the customerID to be auto-generated. I have to write an if statement when the user choose a country
-// todo the division should filter the appropriate divisions.
+    private ObservableList<Division> filteredDivisions = FXCollections.observableArrayList();
+
+    /**Method to handle the saving button for the add customer controller
+     * it checks if every field is empty and returns an alert for the user
+     * otherwise, it will add the customer
+     * @param actionEvent
+     * @throws IOException
+     * @throws SQLException*/
     public void saveButtonOnAction(ActionEvent actionEvent) throws SQLException, IOException {
-        if(countryComboBox.getValue() == null || divisionComboBox.getValue() == null || customerNameTextField.getText().isBlank() ||  addressTextField.getText().isBlank()
-        || postalCodeTextField.getText().isBlank() || phoneTextField.getText().isBlank()){
+        if (countryComboBox.getValue() == null || divisionComboBox.getValue() == null || customerNameTextField.getText().isBlank() || addressTextField.getText().isBlank()
+                || postalCodeTextField.getText().isBlank() || phoneTextField.getText().isBlank()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setContentText("You need to fill up all the fields.");
             alert.show();
-        }
-        else{
-           int rowsAffectedByAddition = DBCustomer.addCustomer(customerNameTextField.getText(), addressTextField.getText(), postalCodeTextField.getText(),
-                   phoneTextField.getText(), LoginForm.getLoggedOnUser().getUserName(), divisionComboBox.getSelectionModel().getSelectedIndex());
+        } else {
+            int rowsAffectedByAddition = DBCustomer.addCustomer(customerNameTextField.getText(), addressTextField.getText(), postalCodeTextField.getText(),
+                    phoneTextField.getText(), LoginForm.getLoggedOnUser().getUserName(), divisionComboBox.getValue().getDivisionID());
 
-
-           if(rowsAffectedByAddition > 0){
-               Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-               alert.setTitle("Confirm");
-               alert.setContentText("Insert Successful.");
-               alert.showAndWait();
-               if(rowsAffectedByAddition > 0 == true){
-                   Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
-                   Object scene = FXMLLoader.load(getClass().getResource("/views/CustomerViewForm.fxml"));
-                   stage.setScene(new Scene((Parent) scene));
-               }
-           }
-           else{
-               Alert alert = new Alert(Alert.AlertType.ERROR);
-               alert.setTitle("Error");
-               alert.setContentText("Insert Failed.");
-               alert.show();
-           }
-
+            if (rowsAffectedByAddition > 0) {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Confirm");
+                alert.setContentText("Insert Successful.");
+                alert.showAndWait();
+                Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
+                Object scene = FXMLLoader.load(getClass().getResource("/views/CustomerViewForm.fxml"));
+                stage.setScene(new Scene((Parent) scene));
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setContentText("Insert Failed.");
+                alert.show();
+            }
         }
     }
 
+    /**method to clear the scene
+     * @param actionEvent
+     * @throws IOException*/
     public void clearButtonOnAction(ActionEvent actionEvent) throws IOException {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "You are trying to clear the scene. Do you want to continue?");
         Optional<ButtonType> result = alert.showAndWait();
@@ -88,8 +93,8 @@ public class CustomerAddForm implements Initializable {
             stage.show();
         }
     }
-    /**backButtonOnAction
-     * it handles the cancel and go back to the main screen event
+
+    /**it handles the cancel and go back to the main screen event
      * @param actionEvent action event
      * @throws IOException*/
     public void backButtonOnAction(ActionEvent actionEvent) throws IOException {
@@ -104,25 +109,37 @@ public class CustomerAddForm implements Initializable {
         }
     }
 
+    /**Initialize the stage and it filters the countries and divisions
+     * @param url this is the user location
+     * @param resourceBundle resourceBundle*/
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        try {
-            ObservableList<DBCountry> allCountries = DBCountry.getAllCountries();
-            //ObservableList<String> countryNames = FXCollections.observableArrayList();
-            ObservableList<DBDivision> allDivisions = DBDivision.getAllDivisions();
-            //ObservableList<String> divisionNames = FXCollections.observableArrayList();
-
-            countryComboBox.setItems(allCountries);
-            divisionComboBox.setItems(allDivisions);
+            countryComboBox.setItems(ListManager.allCountries);
+            countryComboBox.getSelectionModel().select(0);
+            for(Division d : ListManager.allDivisions){
+                if(d.getCountryID() == countryComboBox.getValue().getCountryID()){
+                    filteredDivisions.add(d);
+                }
+            }
+            divisionComboBox.setItems(filteredDivisions);
+            divisionComboBox.getSelectionModel().selectFirst();
             customerIDTextField.getText();
             customerNameTextField.getText();
             addressTextField.getText();
             postalCodeTextField.getText();
             phoneTextField.getText();
+    }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
+    @FXML
+    public void onActionSelectCountry(ActionEvent actionEvent) {
+        int countryID = countryComboBox.getValue().getCountryID();
+        filteredDivisions.clear();
+        for(Division d : ListManager.allDivisions){
+            if(d.getCountryID() == countryID){
+                filteredDivisions.add(d);
+            }
         }
-
+        divisionComboBox.setItems(filteredDivisions);
+        divisionComboBox.getSelectionModel().selectFirst();
     }
 }

@@ -3,6 +3,7 @@ package dbAccess;
 import helper.DBConnection;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import model.Contact;
 import model.User;
 
 import java.sql.PreparedStatement;
@@ -11,6 +12,7 @@ import java.sql.SQLException;
 
 import static helper.DBConnection.conn;
 
+/**Class DBUser*/
 public class DBUser extends User {
     /**
      * Constructor for Class User
@@ -19,10 +21,11 @@ public class DBUser extends User {
      * @param addUserName
      */
     public DBUser(Integer addUserID, String addUserName) {
+
         super(addUserID, addUserName);
     }
 
-    /**Get  unique allUserID from the database
+    /** A list where it gets  unique allUserID from the database
      * @return list of allUserID */
     public static ObservableList<User> getAllUsers() throws SQLException {
         ObservableList<User> allUsers = FXCollections.observableArrayList();
@@ -37,6 +40,23 @@ public class DBUser extends User {
         }
         ps.close();
         return allUsers;
+    }
+    /**It takes a username as an input and returns the appropriate user id
+     * @param userID the name of the user that I am searching for
+     * @return the appropriate user ID
+     * @throws SQLException*/
+    public static User getUser(int userID) throws SQLException {
+        String sql = "SELECT * FROM users WHERE User_ID = ?";
+        PreparedStatement ps = DBConnection.conn.prepareStatement(sql);
+        ps.setInt(1, userID);
+        ResultSet rs = ps.executeQuery();
+        while(rs.next()){
+            String userName = rs.getString("User_Name");
+            //String contactEmail = rs.getString("Email");
+            User user = new User(userID, userName);
+            return user;
+        }
+        return null;
     }
 
     /**validates the user credential to login

@@ -21,7 +21,7 @@ public class Appointment {
     private int customerID;
     private int userID;
     private int contactID;
-    private String contactName;
+    //private String contactName;
 
     /**Generate the constructor for Class Appointment
      * @param appointmentID appointmentID as a Primary Key
@@ -144,7 +144,7 @@ public class Appointment {
         return contactID;
     }
 
-
+//Setters
     public void setAppointmentID(int appointmentID) {
 
         this.appointmentID = appointmentID;

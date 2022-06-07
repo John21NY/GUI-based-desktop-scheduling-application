@@ -1,5 +1,6 @@
 package model;
 
+/**Class Reports*/
 public class Reports {
     private String countryName;
     private int countryCount;

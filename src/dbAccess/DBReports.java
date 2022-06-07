@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 
+/**Class DBReports*/
 public class DBReports extends Appointment {
     /**
      * Generate the constructor for Class Appointment
@@ -38,6 +39,9 @@ public class DBReports extends Appointment {
 
 
     }
+    /**A list for the reports where it can get the countries
+     * @return countriesList
+     * @throws SQLException*/
     public static ObservableList<Reports> getCountries() throws SQLException {
         ObservableList<Reports> countriesList = FXCollections.observableArrayList();
         String sql = "SELECT countries.Country, count(*) as countryCount FROM client_schedule.customers INNER JOIN" +
