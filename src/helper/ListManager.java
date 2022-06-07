@@ -19,9 +19,9 @@ public class ListManager {
         ZonedDateTime estZdt = ZonedDateTime.of(LocalDate.now(), LocalTime.of(bh,0), ZoneId.of("America/New_York"));
         ZonedDateTime localZdt = ZonedDateTime.ofInstant(estZdt.toInstant(), ZoneId.systemDefault());
         ObservableList<LocalTime> startTimeList = FXCollections.observableArrayList();
-        for(int h = 0; h < iter; h++ ){
+        for(int h = 0; h < iter * 4; h++ ){
             startTimeList.add(localZdt.toLocalTime());
-            localZdt = localZdt.plusHours(1);
+            localZdt = localZdt.plusMinutes(15);
 
         }
         return startTimeList;

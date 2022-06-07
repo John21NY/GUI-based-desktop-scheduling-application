@@ -59,6 +59,14 @@ public class CustomerEditForm implements Initializable {
         phoneTextField.setText(String.valueOf(customerToModify.getPhone()));
         Country country = DBCountry.getCountry(customerToModify.getCountryID());
         countryComboBox.setValue(country);
+
+        for(Division d : ListManager.allDivisions){
+            if(d.getCountryID() == countryComboBox.getValue().getCountryID()){
+                filteredDivisions.add(d);
+            }
+        }
+        divisionComboBox.setItems(filteredDivisions);
+        divisionComboBox.getSelectionModel().selectFirst();
         Division division = DBDivision.getDivision(customerToModify.getDivisionID());
         divisionComboBox.setValue(division);
     }
@@ -125,13 +133,13 @@ public class CustomerEditForm implements Initializable {
         try {
             countryComboBox.setItems(ListManager.allCountries);
             countryComboBox.getSelectionModel().select(0);
-            for(Division d : ListManager.allDivisions){
-                if(d.getCountryID() == countryComboBox.getValue().getCountryID()){
-                    filteredDivisions.add(d);
-                }
-            }
-            divisionComboBox.setItems(filteredDivisions);
-            divisionComboBox.getSelectionModel().selectFirst();
+//            for(Division d : ListManager.allDivisions){
+//                if(d.getCountryID() == countryComboBox.getValue().getCountryID()){
+//                    filteredDivisions.add(d);
+//                }
+//            }
+//            divisionComboBox.setItems(filteredDivisions);
+//            divisionComboBox.getSelectionModel().selectFirst();
             customerIDTextField.getText();
             customerNameTextField.getText();
             addressTextField.getText();
