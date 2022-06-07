@@ -24,6 +24,10 @@ public class ListManager {
             localZdt = localZdt.plusMinutes(15);
 
         }
+        startTimeList.add(localZdt.toLocalTime());
+        localZdt = localZdt.plusMinutes(15);
+
+
         return startTimeList;
     }
     public static ObservableList<Division> allDivisions = FXCollections.observableArrayList();
