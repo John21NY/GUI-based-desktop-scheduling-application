@@ -82,21 +82,33 @@ public class AppointmentAddForm implements Initializable {
         boolean isOverlap = false;
 
         try {
+            if (startTimeCB.equals(null) || endTimeCB.equals(null) || title.isBlank() || location.isBlank() || type.isBlank()
+                    || description.isBlank() || dateDatePicker.getEditor().getText().isBlank() || customerID <= 0 || userID <= 0 || contactID <= 0) {
+                isOverlap = true;
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setContentText("You need to fill up all the fields.");
+                alert.show();
+                return;
+            }
+            else if (startTimeCB == endTimeCB) {
+                isOverlap = true;
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setContentText("Appointment start time cannot be the same with the end time.");
+                alert.show();
+                return;
+            }
+            start = LocalDateTime.of(dateDatePicker.getValue(), startTimeCB);
+            end = LocalDateTime.of(dateDatePicker.getValue(), endTimeCB);
+
             for (Appointment appointment : DBAppointment.getAllAppointments()) {
                 LocalDateTime newAppointmentStart = appointment.getStartDateTime();
                 LocalDateTime newAppointmentEnd = appointment.getEndDateTime();
 
-                if (startTimeCB.equals(null) || endTimeCB.equals(null) || title.isBlank() || location.isBlank() || type.isBlank()
-                        || description.isBlank() || dateDatePicker.getEditor().getText().isBlank() || customerID <= 0 || userID <= 0 || contactID <= 0) {
-                    isOverlap = true;
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Error");
-                    alert.setContentText("You need to fill up all the fields.");
-                    alert.show();
-                    break;
-                } else {
-                    start = LocalDateTime.of(dateDatePicker.getValue(), startTimeCB);
-                    end = LocalDateTime.of(dateDatePicker.getValue(), endTimeCB);
+                if(appointment.getCustomerID() != customerID){
+                    continue;
+                }
 
                     if (startTimeCB.isAfter(endTimeCB)) {
                         isOverlap = true;
@@ -105,14 +117,7 @@ public class AppointmentAddForm implements Initializable {
                         alert.setContentText("Appointment start time must be earlier than the end time.");
                         alert.show();
                         break;
-                    } else if (startTimeCB == endTimeCB) {
-                        isOverlap = true;
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("Error");
-                        alert.setContentText("Appointment start time cannot be the same with the end time.");
-                        alert.show();
-                        break;
-                    } else if (newAppointmentStart == start || newAppointmentEnd == end) {
+                    }  else if (newAppointmentStart.isEqual(start)  || newAppointmentEnd.isEqual(end)) {
                         isOverlap = true;
                         Alert alert = new Alert(Alert.AlertType.WARNING);
                         alert.setTitle("Appointment Overlapping.");
@@ -152,8 +157,17 @@ public class AppointmentAddForm implements Initializable {
                         alert.show();
                         break;
                         //5
-                    }
-                }
+                    }//todo I need to fix the conditional statement here. I have a screenshot
+//                    else if (customerID == appointment.getCustomerID() && newAppointmentStart.isEqual(start) && newAppointmentEnd.isEqual(end)){
+//                        isOverlap = true;
+//                        Alert alert = new Alert(Alert.AlertType.WARNING);
+//                        alert.setTitle("Appointment Overlapping.");
+//                        alert.setContentText("Appointment overlaps with existing appointment. You have already scheduled an appointment at the same time and day.");
+//                        alert.show();
+//                        break;
+//
+//                    }
+
             }
             if(!isOverlap) {
                     int rowsAffectedByAddition = DBAppointment.addAppointment(title, description, location, type,

@@ -101,33 +101,47 @@ public class AppointmentEditForm implements Initializable {
         boolean isOverlap = false;
 
         try {
+            if (startTimeCB == null || endTimeCB == null || title.isBlank() || location.isBlank() || type.isBlank()
+                    || description.isBlank() || dateDatePicker.getEditor().getText().isBlank() || customerID <= 0 || userID <= 0 || contactID <= 0) {
+                isOverlap = true;
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setContentText("You need to fill up all the fields.");
+                alert.show();
+                return;
+            }
+            else if (startTimeCB == endTimeCB) {
+                isOverlap = true;
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setContentText("Appointment start time cannot be the same with the end time.");
+                alert.show();
+                return;
+                //todo this is the statement that needs attention
+            }
             for (Appointment appointment : DBAppointment.getAllAppointments()) {
                 LocalDateTime newAppointmentStart = appointment.getStartDateTime();
                 LocalDateTime newAppointmentEnd = appointment.getEndDateTime();
 
-                if (startTimeCB == null || endTimeCB == null || title.isBlank() || location.isBlank() || type.isBlank()
-                        || description.isBlank() || dateDatePicker.getEditor().getText().isBlank() || customerID <= 0 || userID <= 0 || contactID <= 0) {
-                    isOverlap = true;
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Error");
-                    alert.setContentText("You need to fill up all the fields.");
-                    alert.show();
-                    break;
-                } else if (startTimeCB.isAfter(endTimeCB)) {
+                if(appointment.getAppointmentID() == appointmentToModify.getAppointmentID() ||
+                        appointment.getCustomerID() != appointmentToModify.getCustomerID()){
+                    continue;
+                }
+                if (startTimeCB.isAfter(endTimeCB)) {
                     isOverlap = true;
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Error");
                     alert.setContentText("Appointment start time must be earlier than the end time.");
                     alert.show();
                     break;
-                } else if (startTimeCB == endTimeCB) {
+                } else if (newAppointmentStart.isEqual(start)  || newAppointmentEnd.isEqual(end)) {
                     isOverlap = true;
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Error");
-                    alert.setContentText("Appointment start time cannot be the same with the end time.");
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Appointment Overlapping.");
+                    alert.setContentText("Appointment overlaps with existing appointment.");
                     alert.show();
                     break;
-                } else if (newAppointmentStart.isBefore(start) && newAppointmentEnd.isAfter(start)) {
+                }else if (newAppointmentStart.isBefore(start) && newAppointmentEnd.isAfter(start)) {
                     isOverlap = true;
                     Alert alert = new Alert(Alert.AlertType.WARNING);
                     alert.setTitle("Appointment Overlapping.");
