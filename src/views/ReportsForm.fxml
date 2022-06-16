@@ -13,7 +13,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="521.0" prefWidth="884.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ReportsForm">
 <children>
-    <Label layoutX="6.0" layoutY="9.0" prefHeight="503.0" prefWidth="867.0" style="-fx-background-color: #263F73#263F73;" />
+    <Label layoutX="-16.0" layoutY="10.0" prefHeight="503.0" prefWidth="867.0" style="-fx-background-color: #263F73#263F73;" />
     <Label layoutX="29.0" layoutY="25.0" prefHeight="28.0" prefWidth="78.0" text="Reports" textFill="#fffefe">
         <font>
             <Font size="23.0" />
@@ -60,16 +60,11 @@
                         <children>
                             <AnchorPane prefHeight="363.0" prefWidth="848.0">
                                 <children>
-                                    <TableView fx:id="appointmentTotalsAppointmentType" layoutX="74.0" layoutY="62.0" prefHeight="231.0" prefWidth="242.0">
+                                    <TableView fx:id="monthAndTypeTable" layoutX="102.0" layoutY="61.0" prefHeight="232.0" prefWidth="639.0">
                                         <columns>
-                                            <TableColumn fx:id="appointmentTotalsAppointmentTypeCol" prefWidth="123.0" text="Appointment Type" />
-                                            <TableColumn fx:id="appointmentTotalsTypeTotalCol" prefWidth="118.0" text="Total" />
-                                        </columns>
-                                    </TableView>
-                                    <TableView fx:id="appointmentTotalAppointmentByMonth" layoutX="376.0" layoutY="61.0" prefHeight="232.0" prefWidth="275.0">
-                                        <columns>
-                                            <TableColumn fx:id="appointmentTotalsByMonth" prefWidth="148.0" text="Appointments By Month" />
-                                            <TableColumn fx:id="appointmentTotalsMonthTotal" prefWidth="126.0" text="Total" />
+                                            <TableColumn fx:id="appointmentTotalMonthCol" prefWidth="148.0" text="Month" />
+                                            <TableColumn fx:id="appointmentTotalTypeCol" prefWidth="196.0" text="Type" />
+                                            <TableColumn fx:id="appointmentTotalCountCol" prefWidth="294.0" text="Total" />
                                         </columns>
                                     </TableView>
                                 </children>

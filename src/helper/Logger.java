@@ -12,8 +12,7 @@ public class Logger {
      private static String logPath = "loginActivity.txt";
     /**it will write the buffered output to the login activity in the login activity text file
      * @param userName username
-     * @param isLogged boolean for successful login or not
-     * @throws IOException*/
+     * @param isLogged boolean for successful login or not*/
      public static void checkLogin(String userName, boolean isLogged) {
          try {
              BufferedWriter logger = new BufferedWriter(new FileWriter(logPath, true));

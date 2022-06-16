@@ -5,6 +5,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Appointment;
 import model.Reports;
+import model.ReportsPerMonth;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -58,5 +59,20 @@ public class DBReports extends Appointment {
             countriesList.add(report);
         }
         return countriesList;
+    }
+    public static ObservableList<ReportsPerMonth> getAppointmentCountByMonthAndType() throws SQLException {
+        ObservableList<ReportsPerMonth> list = FXCollections.observableArrayList();
+        String sql = "SELECT monthName(start) as name, type, count(type) as cnt from appointments GROUP BY monthName(start), type ORDER BY monthName(start), type";
+        PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+        while(rs.next()){
+            String monthName = rs.getString("Name");
+            String type = rs.getString("Type");
+            int count = rs.getInt("cnt");
+            ReportsPerMonth rpm = new ReportsPerMonth(monthName,count, type);
+            list.add(rpm);
+        }
+        return list;
+
     }
 }

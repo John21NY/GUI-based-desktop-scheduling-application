@@ -88,7 +88,8 @@ public class CustomerViewForm implements Initializable {
 /**it checks if a customer has been selected and create and alert for the user.
  * Otherwise, it changes screen to the customerEditForm
  * @param actionEvent click Button
- * @throws IOException*/
+ * @throws IOException
+ * @throws SQLException*/
     public void editButtonOnAction(ActionEvent actionEvent) throws IOException, SQLException {
         Customer selectedCustomer = (Customer) customerTable.getSelectionModel().getSelectedItem();
         FXMLLoader loader = new FXMLLoader();
@@ -121,8 +122,7 @@ public class CustomerViewForm implements Initializable {
     }
 /**Initialize the stage
  * @param url this is the user location
- * @param resourceBundle resourceBundle
- * @throws SQLException*/
+ * @param resourceBundle resourceBundle*/
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {

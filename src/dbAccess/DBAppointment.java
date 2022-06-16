@@ -16,7 +16,7 @@ import java.time.*;
 public class DBAppointment {
     /**we are looking for all appointments in the database
      * @throws SQLException
-     * @returns allAppointments, a list of all appointments
+     * @return allAppointments, a list of all appointments
      */
     public static ObservableList<Appointment> getAllAppointments() throws SQLException {
         ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();

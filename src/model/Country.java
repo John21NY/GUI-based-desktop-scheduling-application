@@ -6,8 +6,8 @@ public class Country {
     private String countryName;
 
     /**Generate the constructor
-     * @param countryID
-     * @param countryName */
+     * @param countryID country id
+     * @param countryName country name*/
     public Country(int countryID, String countryName){
         this.countryID = countryID;
         this.countryName = countryName;

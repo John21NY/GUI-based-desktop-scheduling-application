@@ -6,9 +6,9 @@ public class Contact {
     public String contactEmail;
 
     /**Generate the constructor for Class Contact
-     * @param contactID
-     * @param contactName
-     * @param contactEmail */
+     * @param contactID contact id
+     * @param contactName contact name
+     * @param contactEmail contact email*/
     public Contact(int contactID, String contactName, String contactEmail) {
         this.contactID = contactID;
         this.contactName = contactName;

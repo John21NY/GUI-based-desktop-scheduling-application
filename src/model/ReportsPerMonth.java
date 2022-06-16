@@ -2,13 +2,15 @@ package model;
 
 /**Class ReportsPerMonth*/
 public class ReportsPerMonth {
-    public String appointmentPerMonth;
-    public int appointmentsInTotal;
+    private String appointmentType;
+    private String appointmentPerMonth;
+    private int appointmentsInTotal;
 
 /**generate the constructor
  * @param appointmentPerMonth
  * @param appointmentsInTotal */
-    public ReportsPerMonth(String appointmentPerMonth, int appointmentsInTotal) {
+    public ReportsPerMonth(String appointmentPerMonth, int appointmentsInTotal, String appointmentType) {
+        this.appointmentType = appointmentType;
         this.appointmentPerMonth = appointmentPerMonth;
         this.appointmentsInTotal = appointmentsInTotal;
     }
@@ -21,5 +23,9 @@ public class ReportsPerMonth {
  * @return appointmentsInTotal*/
     public int getAppointmentsInTotal() {
         return appointmentsInTotal;
+    }
+
+    public String getAppointmentType() {
+        return appointmentType;
     }
 }

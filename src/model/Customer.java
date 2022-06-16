@@ -14,11 +14,11 @@ public class Customer {
 
     /**
      * Generate constructor for Customer
-     * @param customerID   customer ID
-     * @param address      customer address
+     * @param customerID customer ID
+     * @param address customer address
      * @param customerName customer name
-     * @param country      of customer
-     * @param phone        customer's phone
+     * @param country customer country
+     * @param phone customer's phone
      * @param division division
      * @param postalCode postal code
      * @param divisionID division id
@@ -42,7 +42,8 @@ public class Customer {
     public int getCustomerID() {
         return customerID;
     }
-    /**Setter for customerID*/
+    /**Setter for customerID
+     * @param customerID customer id*/
     public void setCustomerID(Integer customerID) {
         this.customerID = customerID;
     }
@@ -51,7 +52,8 @@ public class Customer {
     public String getCustomerName() {
         return customerName;
     }
-    /**Setter for customerName*/
+    /**Setter for customerName
+     * @param customerName customer name*/
     public void setCustomerName(String customerName) {
         this.customerName = customerName;
     }
@@ -60,7 +62,8 @@ public class Customer {
     public String getAddress() {
         return address;
     }
-    /**Setter for address*/
+    /**Setter for address
+     * @param address address*/
     public void setAddress(String address) {
         this.address = address;
     }
@@ -69,7 +72,8 @@ public class Customer {
     public String getPostalCode() {
         return postalCode;
     }
-    /**Setter for postalCode*/
+    /**Setter for postalCode
+     * @param postalCode postal code*/
     public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
     }
@@ -78,7 +82,8 @@ public class Customer {
     public String getPhone() {
         return phone;
     }
-    /**Setter for phone*/
+    /**Setter for phone
+     * @param phone phone*/
     public void setPhone(String phone) {
         this.phone = phone;
     }
@@ -87,7 +92,8 @@ public class Customer {
     public int getDivisionID() {
         return divisionID;
     }
-    /**Setter for divisionID*/
+    /**Setter for divisionID
+     * @param divisionID division id*/
     public void setDivisionID(Integer divisionID) {
         this.divisionID = divisionID;
     }
@@ -96,7 +102,8 @@ public class Customer {
     public String getDivision() {
         return division;
     }
-    /**Setter for division*/
+    /**Setter for division
+     * @param division division*/
     public void setDivision(String division) {
         this.division = division;
     }
@@ -105,7 +112,8 @@ public class Customer {
     public String getCountry() {
         return country;
     }
-    /**Setter for country*/
+    /**Setter for country
+     * @param country country*/
     public void setCountry(String country) {
         this.country = country;
     }
@@ -114,7 +122,8 @@ public class Customer {
     public int getCountryID() {
         return countryID;
     }
-    /**Setter for countryID*/
+    /**Setter for countryID
+     * @param countryID country id*/
     public void setCountryID(int countryID) {
         this.countryID = countryID;
     }

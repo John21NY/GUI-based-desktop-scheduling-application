@@ -12,8 +12,7 @@ import java.time.ZonedDateTime;
 
 /**Class ListManager
  * it will create a list of business hours, and it will iterate until create a full list of the business hours that
- * are described in the requirements
- * @returns startTimeList*/
+ * are described in the requirements*/
 public class ListManager {
     public static ObservableList<LocalTime> generateTimeList(int bh, int iter){
         ZonedDateTime estZdt = ZonedDateTime.of(LocalDate.now(), LocalTime.of(bh,0), ZoneId.of("America/New_York"));

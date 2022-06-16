@@ -49,7 +49,7 @@ public class CustomerAddForm implements Initializable {
     /**Method to handle the saving button for the add customer controller
      * it checks if every field is empty and returns an alert for the user
      * otherwise, it will add the customer
-     * @param actionEvent
+     * @param actionEvent actionevent
      * @throws IOException
      * @throws SQLException*/
     public void saveButtonOnAction(ActionEvent actionEvent) throws SQLException, IOException {
@@ -64,10 +64,10 @@ public class CustomerAddForm implements Initializable {
                     phoneTextField.getText(), LoginForm.getLoggedOnUser().getUserName(), divisionComboBox.getValue().getDivisionID());
 
             if (rowsAffectedByAddition > 0) {
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Confirm");
                 alert.setContentText("Insert Successful.");
-                alert.showAndWait();
+                alert.show();
                 Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
                 Object scene = FXMLLoader.load(getClass().getResource("/views/CustomerViewForm.fxml"));
                 stage.setScene(new Scene((Parent) scene));

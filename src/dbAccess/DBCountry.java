@@ -20,9 +20,7 @@ public class DBCountry extends Country {
     }
 
     /**it uses the following query to select country id's from countries and adds the result in
-     * the appropriate list of countries. Each country will have the correct divisions depicted in their list
-     * @return a list of each country with the appropriate division list
-     * @throws SQLException*/
+     * the appropriate list of countries. Each country will have the correct divisions depicted in their list*/
     public static void select() {
         try{
             ListManager.allCountries.clear();

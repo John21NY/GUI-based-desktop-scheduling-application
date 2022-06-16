@@ -73,8 +73,7 @@ public class MainScreen implements Initializable {
 
     /**method for monthly appointments.
      * lambda expression for observable lists that validates for each appointment a specific condition
-     * @param actionEvent
-     * @throws SQLException*/
+     * @param actionEvent*/
     public void monthlyRadioButtonOnAction(ActionEvent actionEvent) {
         try {
             ObservableList<Appointment> allAppointment = DBAppointment.getAllAppointments();
@@ -119,8 +118,7 @@ public class MainScreen implements Initializable {
         });
     }
     /**method for unfiltered appointments.
-     * @param actionEvent
-     * @throws SQLException*/
+     * @param actionEvent*/
     public void allRadioButtonOnAction(ActionEvent actionEvent) {
         try{
             appointmentTable.setItems(DBAppointment.getAllAppointments());
@@ -205,7 +203,9 @@ public class MainScreen implements Initializable {
             if(confirmation.isPresent() && confirmation.get() == ButtonType.YES){
                 DBAppointment.deleteAppointment(selectedAppointment.getAppointmentID());
                 appointmentTable.setItems(DBAppointment.getAllAppointments());
-                Alert alert1 = new Alert(Alert.AlertType.CONFIRMATION, "Appointment has been deleted.");
+                Alert alert1 = new Alert(Alert.AlertType.INFORMATION, "Appointment with appointment id = " +
+                        selectedAppointment.getAppointmentID() + " and Appointment type = " + selectedAppointment.getType() +
+                        " has been deleted.");
                 alert1.showAndWait();
             }
             else{

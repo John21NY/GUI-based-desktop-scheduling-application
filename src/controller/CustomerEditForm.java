@@ -49,7 +49,9 @@ public class CustomerEditForm implements Initializable {
     private Customer customerToModify;
     private ObservableList<Division> filteredDivisions = FXCollections.observableArrayList();
 
-    /**Represents a method to receive a customer that it will be modified*/
+    /**Represents a method to receive a customer that it will be modified
+     * @param selectedCustomer selected customer
+     * @throws SQLException*/
     public void receiveCustomer(Customer selectedCustomer) throws SQLException {
         customerToModify = selectedCustomer;
         customerIDTextField.setText(String.valueOf(customerToModify.getCustomerID()));
@@ -75,8 +77,7 @@ public class CustomerEditForm implements Initializable {
  * it checks if every field is empty and returns an alert for the user
  * otherwise, it will update customer's details
  * @param actionEvent
- * @throws IOException
- * @throws SQLException*/
+ * @throws IOException*/
     public void saveButtonOnAction(ActionEvent actionEvent) throws IOException {
         try {
             if (countryComboBox.getValue() == null || divisionComboBox.getValue() == null || customerNameTextField.getText().isBlank() || addressTextField.getText().isBlank()
@@ -90,10 +91,10 @@ public class CustomerEditForm implements Initializable {
                         phoneTextField.getText(),  divisionComboBox.getValue().getDivisionID(), customerToModify.getCustomerID());
 
                 if (rowsAffectedByAddition > 0) {
-                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Confirm");
                     alert.setContentText("Update Successful.");
-                    alert.showAndWait();
+                    alert.show();
                     Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
                     Object scene = FXMLLoader.load(getClass().getResource("/views/CustomerViewForm.fxml"));
                     stage.setScene(new Scene((Parent) scene));
@@ -126,8 +127,7 @@ public class CustomerEditForm implements Initializable {
 
     /**Initialize the stage and it filters the countries and divisions
      * @param url this is the user location
-     * @param resourceBundle resourceBundle
-     * @throws Exception*/
+     * @param resourceBundle resourceBundle*/
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {

@@ -49,18 +49,12 @@ public class ReportsForm{
     public TableColumn tableContactID;
     @FXML
     public Tab appointmentTotalsTab;
-    @FXML
-    public TableView appointmentTotalsAppointmentType;
-    @FXML
-    public TableColumn appointmentTotalsAppointmentTypeCol;
-    @FXML
-    public TableColumn appointmentTotalsTypeTotalCol;
-    @FXML
-    public TableView appointmentTotalAppointmentByMonth;
-    @FXML
-    public TableColumn appointmentTotalsByMonth;
-    @FXML
-    public TableColumn appointmentTotalsMonthTotal;
+//    @FXML
+//    public TableView appointmentTotalsAppointmentType;
+//    @FXML
+//    public TableColumn appointmentTotalsAppointmentTypeCol;
+//    @FXML
+//    public TableColumn appointmentTotalsTypeTotalCol;
     @FXML
     public Tab reportCustomerByCountry;
     @FXML
@@ -69,6 +63,14 @@ public class ReportsForm{
     public TableColumn countryName;
     @FXML
     public TableColumn countryCounter;
+    @FXML
+    public TableView monthAndTypeTable;
+    @FXML
+    public TableColumn appointmentTotalMonthCol;
+    @FXML
+    public TableColumn appointmentTotalTypeCol;
+    @FXML
+    public TableColumn appointmentTotalCountCol;
 
     /**back button to navigate the user to the previous screen
      * @throws IOException*/
@@ -96,16 +98,17 @@ public class ReportsForm{
         endDateTimeColumn.setCellValueFactory(new PropertyValueFactory<>("endDateTime"));
         customerIdColumn.setCellValueFactory(new PropertyValueFactory<>("customerID"));
         tableContactID.setCellValueFactory(new PropertyValueFactory<>("contactID"));
-        appointmentTotalsAppointmentTypeCol.setCellValueFactory(new PropertyValueFactory<>("appointmentType"));
-        appointmentTotalsTypeTotalCol.setCellValueFactory(new PropertyValueFactory<>("appointmentsInTotal"));
-        appointmentTotalsByMonth.setCellValueFactory(new PropertyValueFactory<>("appointmentPerMonth"));
-        appointmentTotalsMonthTotal.setCellValueFactory(new PropertyValueFactory<>("appointmentsInTotal"));
+//        appointmentTotalsAppointmentTypeCol.setCellValueFactory(new PropertyValueFactory<>("appointmentType"));
+//        appointmentTotalsTypeTotalCol.setCellValueFactory(new PropertyValueFactory<>("appointmentsInTotal"));
+        appointmentTotalMonthCol.setCellValueFactory(new PropertyValueFactory<>("appointmentPerMonth"));
+        appointmentTotalTypeCol.setCellValueFactory(new PropertyValueFactory<>("appointmentType"));
+        appointmentTotalCountCol.setCellValueFactory(new PropertyValueFactory<>("appointmentsInTotal"));
         countryName.setCellValueFactory(new PropertyValueFactory<>("countryName"));
         countryCounter.setCellValueFactory(new PropertyValueFactory<>("countryCount"));
 
         ObservableList<Contact> contactsList = DBContact.getAllContacts();
         ObservableList<String> allContactsNames = FXCollections.observableArrayList();
-        //lambda expression #1
+        //lambda expression
         contactsList.forEach(contacts -> allContactsNames.add(contacts.getContactName()));
         contactScheduleContactBox.setItems(allContactsNames);
 
@@ -178,20 +181,20 @@ public class ReportsForm{
                 }
             }
 
-            for (Month month: monthOfAppointments) {
-                int totalMonth = Collections.frequency(appointmentMonths, month);
-                String monthName = month.name();
-                ReportsPerMonth appointmentMonth = new ReportsPerMonth(monthName, totalMonth);
-                reportMonths.add(appointmentMonth);
-            }
-            appointmentTotalAppointmentByMonth.setItems(reportMonths);
+//            for (Month month: monthOfAppointments) {
+//                int totalMonth = Collections.frequency(appointmentMonths, month);
+//                String monthName = month.name();
+//                ReportsPerMonth appointmentMonth = new ReportsPerMonth(monthName, totalMonth, "");
+//                reportMonths.add(appointmentMonth);
+//            }
+            monthAndTypeTable.setItems(DBReports.getAppointmentCountByMonthAndType());
 
-            for (String type: uniqueAppointment) {
-                int typeTotal = Collections.frequency(appointmentType, type);
-                ReportsPerType appointmentTypes = new ReportsPerType(type, typeTotal);
-                reportType.add(appointmentTypes);
-            }
-            appointmentTotalsAppointmentType.setItems(reportType);
+//            for (String type: uniqueAppointment) {
+//                int typeTotal = Collections.frequency(appointmentType, type);
+//                ReportsPerType appointmentTypes = new ReportsPerType(type, typeTotal);
+//                reportType.add(appointmentTypes);
+//            }
+//            appointmentTotalsAppointmentType.setItems(reportType);
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -34,7 +34,6 @@ public class DBDivision extends Division {
         return divisionID;
     }
     /**it selects the division from the division table
-     * @return a list of all divisions adding them one by one
      * @throws SQLException*/
     public static void select() throws SQLException {
         ListManager.allDivisions.clear();

@@ -72,8 +72,10 @@ public class AppointmentAddForm implements Initializable {
         String type = typeTextField.getText();
         LocalTime startTimeCB = startTimeComboBox.getValue();
         LocalTime endTimeCB = endTimeComboBox.getValue();
-        LocalDateTime start = LocalDateTime.of(dateDatePicker.getValue(), startTimeCB);
-        LocalDateTime end = LocalDateTime.of(dateDatePicker.getValue(), endTimeCB);
+        LocalDateTime start = null;
+        LocalDateTime end = null;
+        //LocalDateTime start = LocalDateTime.of(dateDatePicker.getValue(), startTimeCB);
+        //LocalDateTime end = LocalDateTime.of(dateDatePicker.getValue(), endTimeCB);
         int customerID = customerComboBox.getValue().getCustomerID();
         int userID = userComboBox.getValue().getUserID();
         int contactID = contactComboBox.getValue().getContactID();
@@ -84,60 +86,73 @@ public class AppointmentAddForm implements Initializable {
                 LocalDateTime newAppointmentStart = appointment.getStartDateTime();
                 LocalDateTime newAppointmentEnd = appointment.getEndDateTime();
 
-                if (startTimeCB == null || endTimeCB == null || title.isBlank() || location.isBlank() || type.isBlank()
+                if (startTimeCB.equals(null) || endTimeCB.equals(null) || title.isBlank() || location.isBlank() || type.isBlank()
                         || description.isBlank() || dateDatePicker.getEditor().getText().isBlank() || customerID <= 0 || userID <= 0 || contactID <= 0) {
                     isOverlap = true;
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Error");
                     alert.setContentText("You need to fill up all the fields.");
                     alert.show();
-                } else if (startTimeCB.isAfter(endTimeCB)) {
-                    isOverlap = true;
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Error");
-                    alert.setContentText("Appointment start time must be earlier than the end time.");
-                    alert.show();
-                } else if (startTimeCB == endTimeCB) {
-                    isOverlap = true;
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Error");
-                    alert.setContentText("Appointment start time cannot be the same with the end time.");
-                    alert.show();
-                } else if (newAppointmentStart == start || newAppointmentEnd == end) {
-                    isOverlap = true;
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("Appointment Overlapping.");
-                    alert.setContentText("Appointment overlaps with existing appointment.");
-                    alert.show();
-                    //1
-                } else if (newAppointmentStart.isBefore(start) && newAppointmentEnd.isAfter(start)) {
-                    isOverlap = true;
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("Appointment Overlapping.");
-                    alert.setContentText("Appointment overlaps with existing appointment. Your existing appointment will interrupt the appointment you are trying to schedule.");
-                    alert.show();
-                    //2
-                } else if (newAppointmentStart.isAfter(start) && newAppointmentStart.isBefore(end)) {
-                    isOverlap = true;
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("Appointment Overlapping.");
-                    alert.setContentText("Appointment overlaps with existing appointment. You will be in another appointment before the appointment you are trying to schedule starts.");
-                    alert.show();
-                    //3
-                } else if (newAppointmentStart.isBefore(start) && newAppointmentEnd.isAfter(end)) {
-                    isOverlap = true;
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("Appointment Overlapping.");
-                    alert.setContentText("Appointment overlaps with existing appointment. You are trying to schedule a longer appointment during your existing appointment.");
-                    alert.show();
-                    //4
-                } else if (newAppointmentStart.isAfter(start) && newAppointmentEnd.isBefore(end)) {
-                    isOverlap = true;
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("Appointment Overlapping.");
-                    alert.setContentText("Appointment overlaps with existing appointment. You are trying to schedule a short appointment during your existing appointment.");
-                    alert.show();
-                    //5
+                    break;
+                } else {
+                    start = LocalDateTime.of(dateDatePicker.getValue(), startTimeCB);
+                    end = LocalDateTime.of(dateDatePicker.getValue(), endTimeCB);
+
+                    if (startTimeCB.isAfter(endTimeCB)) {
+                        isOverlap = true;
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Error");
+                        alert.setContentText("Appointment start time must be earlier than the end time.");
+                        alert.show();
+                        break;
+                    } else if (startTimeCB == endTimeCB) {
+                        isOverlap = true;
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Error");
+                        alert.setContentText("Appointment start time cannot be the same with the end time.");
+                        alert.show();
+                        break;
+                    } else if (newAppointmentStart == start || newAppointmentEnd == end) {
+                        isOverlap = true;
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setTitle("Appointment Overlapping.");
+                        alert.setContentText("Appointment overlaps with existing appointment.");
+                        alert.show();
+                        break;
+                        //1
+                    } else if (newAppointmentStart.isBefore(start) && newAppointmentEnd.isAfter(start)) {
+                        isOverlap = true;
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setTitle("Appointment Overlapping.");
+                        alert.setContentText("Appointment overlaps with existing appointment. Your existing appointment will interrupt the appointment you are trying to schedule.");
+                        alert.show();
+                        break;
+                        //2
+                    } else if (newAppointmentStart.isAfter(start) && newAppointmentStart.isBefore(end)) {
+                        isOverlap = true;
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setTitle("Appointment Overlapping.");
+                        alert.setContentText("Appointment overlaps with existing appointment. You will be in another appointment before the appointment you are trying to schedule starts.");
+                        alert.show();
+                        break;
+                        //3
+                    } else if (newAppointmentStart.isBefore(start) && newAppointmentEnd.isAfter(end)) {
+                        isOverlap = true;
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setTitle("Appointment Overlapping.");
+                        alert.setContentText("Appointment overlaps with existing appointment. You are trying to schedule a longer appointment during your existing appointment.");
+                        alert.show();
+                        break;
+                        //4
+                    } else if (newAppointmentStart.isAfter(start) && newAppointmentEnd.isBefore(end)) {
+                        isOverlap = true;
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setTitle("Appointment Overlapping.");
+                        alert.setContentText("Appointment overlaps with existing appointment. You are trying to schedule a short appointment during your existing appointment.");
+                        alert.show();
+                        break;
+                        //5
+                    }
                 }
             }
             if(!isOverlap) {
@@ -145,10 +160,10 @@ public class AppointmentAddForm implements Initializable {
                             start, end, LoginForm.getLoggedOnUser().getUserName(), LoginForm.getLoggedOnUser().getUserName(),
                             customerID, userID, contactID);
                     if (rowsAffectedByAddition > 0) {
-                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
                         alert.setTitle("Confirm");
                         alert.setContentText("Insert Successful.");
-                        alert.showAndWait();
+                        alert.show();
                         Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
                         Object scene = FXMLLoader.load(getClass().getResource("/views/MainScreen.fxml"));
                         stage.setScene(new Scene((Parent) scene));
@@ -198,8 +213,7 @@ public class AppointmentAddForm implements Initializable {
      * where the business hours start at 8:00 am to 9:00 pm and end at 9:00 am to 10:00 pm. I used 14 iterations to achieve this
      * lambda expression to fill the combo boxes for contact, customer, and user
      * @param url this is the user location
-     * @param resourceBundle resourceBundle
-     * @throws Exception*/
+     * @param resourceBundle resourceBundle*/
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {

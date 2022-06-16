@@ -105,13 +105,14 @@ public class LoginForm implements Initializable {
             ButtonType clickOk = new ButtonType(rb.getString("loginButton"), ButtonBar.ButtonData.OK_DONE);
             Alert alert = new Alert(Alert.AlertType.WARNING, rb.getString("logonFailedButton"),
                     clickOk);
+            usernameTextField.clear();
+            passwordPasswordField.clear();
             alert.showAndWait();
         }
     }
 
     /**this is a button for the user to exit the program
-     * @param actionEvent
-     * @return loggedOnUser*/
+     * @param actionEvent action event*/
     public void exitButtonOnAction(ActionEvent actionEvent) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Exit");
@@ -129,8 +130,7 @@ public class LoginForm implements Initializable {
         return loggedOnUser;
     }
 
-    /**Initialize the values for the current controller
-     * @throws Exception*/
+    /**Initialize the values for the current controller*/
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {

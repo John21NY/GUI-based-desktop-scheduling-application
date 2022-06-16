@@ -58,7 +58,9 @@ public class AppointmentEditForm implements Initializable {
 
 
     private Appointment appointmentToModify;
-    /**Represents a method to receive a customer that it will be modified*/
+    /**Represents a method to receive a customer that it will be modified
+     * @param selectedAppointment selected appointment
+     * @throws SQLException*/
     public void receiveAppointment(Appointment selectedAppointment) throws SQLException {
         appointmentToModify = selectedAppointment;
         appointmentIDTextField.setText(String.valueOf(appointmentToModify.getAppointmentID()));
@@ -83,9 +85,7 @@ public class AppointmentEditForm implements Initializable {
  * it uses some conditions to check if the fields are empty and returns an alert,
  *and then it checks some conditions for overlapping. If the appointment is not overlapping then it will update the
  * appointment or if something goes wrong it will return an alert
- * @param actionEvent
- * @throws SQLException
- * @throws IOException*/
+ * @param actionEvent action event*/
     public void saveButtonOnAction(ActionEvent actionEvent) {
         String title = titleTextField.getText();
         String description = descriptionTextArea.getText();
@@ -112,24 +112,28 @@ public class AppointmentEditForm implements Initializable {
                     alert.setTitle("Error");
                     alert.setContentText("You need to fill up all the fields.");
                     alert.show();
+                    break;
                 } else if (startTimeCB.isAfter(endTimeCB)) {
                     isOverlap = true;
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Error");
                     alert.setContentText("Appointment start time must be earlier than the end time.");
                     alert.show();
+                    break;
                 } else if (startTimeCB == endTimeCB) {
                     isOverlap = true;
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Error");
                     alert.setContentText("Appointment start time cannot be the same with the end time.");
                     alert.show();
+                    break;
                 } else if (newAppointmentStart.isBefore(start) && newAppointmentEnd.isAfter(start)) {
                     isOverlap = true;
                     Alert alert = new Alert(Alert.AlertType.WARNING);
                     alert.setTitle("Appointment Overlapping.");
                     alert.setContentText("Appointment overlaps with existing appointment. Your existing appointment will interrupt the appointment you are trying to schedule.");
                     alert.show();
+                    break;
                     //1
                 } else if (newAppointmentStart.isAfter(start) && newAppointmentStart.isBefore(end)) {
                     isOverlap = true;
@@ -137,6 +141,7 @@ public class AppointmentEditForm implements Initializable {
                     alert.setTitle("Appointment Overlapping.");
                     alert.setContentText("Appointment overlaps with existing appointment. You will be in another appointment before the appointment you are trying to schedule starts.");
                     alert.show();
+                    break;
                     //2
                 } else if (newAppointmentStart.isBefore(start) && newAppointmentEnd.isAfter(end)) {
                     isOverlap = true;
@@ -144,6 +149,7 @@ public class AppointmentEditForm implements Initializable {
                     alert.setTitle("Appointment Overlapping.");
                     alert.setContentText("Appointment overlaps with existing appointment. You are trying to schedule a longer appointment during your existing appointment.");
                     alert.show();
+                    break;
                     //3
                 } else if (newAppointmentStart.isAfter(start) && newAppointmentEnd.isBefore(end)) {
                     isOverlap = true;
@@ -151,13 +157,14 @@ public class AppointmentEditForm implements Initializable {
                     alert.setTitle("Appointment Overlapping.");
                     alert.setContentText("Appointment overlaps with existing appointment. You are trying to schedule a short appointment during your existing appointment.");
                     alert.show();
+                    break;
                     //4
                 }
             }
             if(!isOverlap) {
                     int rowsAffectedByUpdate = DBAppointment.updateAppointment(appointmentToModify.getAppointmentID(), title, description, location, type, start, end, LoginForm.getLoggedOnUser().getUserName(), customerID, userID, contactID);
                     if (rowsAffectedByUpdate > 0) {
-                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
                         alert.setTitle("Confirm");
                         alert.setContentText("Update Successful.");
                         alert.showAndWait();
@@ -196,8 +203,7 @@ public class AppointmentEditForm implements Initializable {
      * where the business hours start at 8:00 am to 9:00 pm and end at 9:00 am to 10:00 pm. I used 14 iterations to achieve this
      * lambda expression to fill the combo boxes for contact, customer, and user
      * @param url this is the user location
-     * @param resourceBundle resourceBundle
-     * @throws Exception*/
+     * @param resourceBundle resourceBundle*/
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {

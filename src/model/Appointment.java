@@ -215,12 +215,14 @@ public class Appointment {
     }
 
     /** getter contact name
-     * @return contactName*/
+     * @return contactName
+     * @throws SQLException*/
     public String getContactName() throws SQLException {
         return DBContact.getContact(contactID).getContactName();
     }
     /** getter customer name
-     * @return customerName*/
+     * @return customerName
+     * @throws SQLException*/
     public String getCustomerName() throws SQLException{
         return DBCustomer.getCustomer(customerID).getCustomerName();
     }
