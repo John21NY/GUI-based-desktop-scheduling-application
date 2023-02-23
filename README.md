@@ -12,7 +12,6 @@ Author: Ioannis Ntoulis
 
 Email: intoul3@whu.edu
 
-Mob: +1 646-320-3213
 
 Student application version: 1.0
 
