@@ -1,5 +1,5 @@
 QAM2 — QAM2 TASK 1: JAVA APPLICATION DEVELOPMENT
-SOFTWARE II - ADVANCED JAVA CONCEPTS — C195
+
 --
 Title and purpose of the application
 -
